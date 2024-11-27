@@ -290,22 +290,28 @@ for future_banner in future_banners:
 # ===========
 #  M A I N
 # ===========
-print("Fetching forecast...")
-resp_data = get_forecast()
-forecast_data = resp_data.json()
+try:
+    print("Fetching forecast...")
+    resp_data = get_forecast()
+    forecast_data = resp_data.json()
 
-print("Updating...")
-update_today(forecast_data)
-update_future(forecast_data)
+    print("Updating...")
+    update_today(forecast_data)
+    update_future(forecast_data)
 
-print("Refreshing...")
-time.sleep(magtag.display.time_to_refresh + 1)
-magtag.display.refresh()
-time.sleep(magtag.display.time_to_refresh + 1)
+    print("Refreshing...")
+    time.sleep(magtag.display.time_to_refresh + 1)
+    magtag.display.refresh()
+    time.sleep(magtag.display.time_to_refresh + 1)
 
-print("Sleeping...")
-h, m, s = (int(t) for t in resp_data.headers["date"].split(" ")[4].split(":"))
-current_time_secs = (h * 3600) + (m * 60) + (s) + forecast_data["utc_offset_seconds"]
-go_to_sleep(current_time_secs)
-#  entire code will run again after deep sleep cycle
-#  similar to hitting the reset button
+    print("Sleeping...")
+    h, m, s = (int(t) for t in resp_data.headers["date"].split(" ")[4].split(":"))
+    current_time_secs = (h * 3600) + (m * 60) + (s) + forecast_data["utc_offset_seconds"]
+    go_to_sleep(current_time_secs)
+    #  entire code will run again after deep sleep cycle
+    #  similar to hitting the reset button
+except BaseException:
+    # if an exception is thrown, deep sleep for an hour and try again
+    # I think this will continue to display the error during that time on the eink display,
+    # but at least it won't get stuck on the exception screen and fail to deep sleep
+    magtag.exit_and_deep_sleep(3600)
