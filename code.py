@@ -7,15 +7,17 @@ import time
 import terminalio
 import displayio
 import adafruit_imageload
+import os
 from adafruit_display_text import label
 from adafruit_magtag.magtag import MagTag
 
 # --| USER CONFIG |--------------------------
-LAT = 47.6  # latitude
-LON = -122.3  # longitude
-TMZ = "America/Los_Angeles"  # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-METRIC = False  # set to True for metric units
-CITY = None  # optional
+LAT = os.getenv("LATITUDE", "47.6")  # latitude
+LON = os.getenv("LONGITUDE", "-122.3") # longitude
+# timezone from https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+TMZ = os.getenv("TMZ", "America/Los_Angeles")
+METRIC = os.getenv("METRIC", "False") == "True"  # set to True for metric units
+CITY = os.getenv("CITY", None)  # optional
 # -------------------------------------------
 
 # ----------------------------
@@ -224,7 +226,7 @@ today_date.anchored_position = (15, 14)
 
 location_name = label.Label(terminalio.FONT, color=0x000000)
 if CITY:
-    location_name.text = f"{CITY[:16]} ({LAT:.1f},{LON:.1f})"
+    location_name.text = f"{CITY[:16]} ({float(LAT):.1f},{float(LON):.1f})"
 else:
     location_name.text = f"({LAT},{LON})"
 
