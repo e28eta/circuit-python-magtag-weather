@@ -135,22 +135,23 @@ def temperature_text(tempC):
 
 
 def wind_text(speedkmh, direction):
-    wind_dir = "N"
-    if direction < 337:
-        wind_dir = "NW"
-    if direction < 293:
-        wind_dir = "W"
-    if direction < 247:
-        wind_dir = "SW"
-    if direction < 202:
-        wind_dir = "S"
-    if direction < 157:
-        wind_dir = "SE"
-    if direction < 112:
-        wind_dir = "E"
-    if direction < 67:
-        wind_dir = "NE"
     if direction < 22:
+        wind_dir = "N"
+    elif direction < 67:
+        wind_dir = "NE"
+    elif direction < 112:
+        wind_dir = "E"
+    elif direction < 157:
+        wind_dir = "SE"
+    elif direction < 202:
+        wind_dir = "S"
+    elif direction < 247:
+        wind_dir = "SW"
+    elif direction < 293:
+        wind_dir = "W"
+    elif direction < 337:
+        wind_dir = "NW"
+    else:
         wind_dir = "N"
 
     wtext = f"from {wind_dir} "
